@@ -35,7 +35,7 @@ const courts = [
 
 // Array of six arrays. 
 // Each of them contains reservations data for particular court
-const reservations = [
+let reservations = [
   [
     {
       courtID: 1,
@@ -185,7 +185,9 @@ class App extends React.Component {
       }))
      
   newReservation = (res) => {
-    console.log(res);
+    let courtID = res.courtID;
+    console.log("From App.js:", res);
+    reservations[courtID-1].push(res);
   }
 
   render() {

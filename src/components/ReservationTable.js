@@ -54,7 +54,7 @@ class ReservationTable extends React.Component {
     this.props.newReservation({
       courtID: this.state.reservation.courtID,
       hour: this.state.reservation.hour,
-      name: name
+      person: name
     })
   }
 
@@ -90,6 +90,7 @@ class ReservationTable extends React.Component {
                       person: ''
                     }
                   }
+                  console.log("From ReservationTable.js: ", res);
                   return (
                     <CustomTableCell key={court.id}>
                       <TableButton 
