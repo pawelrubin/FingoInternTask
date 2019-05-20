@@ -186,7 +186,7 @@ class App extends React.Component {
      
   newReservation = (res) => {
     let courtID = res.courtID;
-    console.log("From App.js:", res);
+    // console.log("From App.js:", res);
     reservations[courtID-1].push(res);
   }
 

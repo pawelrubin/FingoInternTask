@@ -8,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import ReserveDialog from './ReserveDialog';
 import DetailsDialog from './DetailsDialog';
 import TableButton from './TableButton';
-import { throwStatement } from '@babel/types';
 
 class ReservationTable extends React.Component {
   
@@ -70,7 +69,7 @@ class ReservationTable extends React.Component {
         <Table>
           <TableHead>
             <TableRow>
-              <CustomTableCell>Hours</CustomTableCell>
+              <CustomTableCell align="center">Hours</CustomTableCell>
               {courts.map((court) => (
                 <CustomTableCell align="center" key={court.id}> {court.name}</CustomTableCell>
               ))}
@@ -79,7 +78,7 @@ class ReservationTable extends React.Component {
           <TableBody>
             {openHours.map((openHour) => (
               <TableRow key={openHour.id}>
-                <CustomTableCell>{openHour.interval}</CustomTableCell>
+                <CustomTableCell align="center">{openHour.interval}</CustomTableCell>
                 {courts.map((court) => {
                   let res = reservations[court.id - 1].find((e) => e.hour === openHour.id);
                   let taken = (res != null) ? true : false
@@ -90,9 +89,9 @@ class ReservationTable extends React.Component {
                       person: ''
                     }
                   }
-                  console.log("From ReservationTable.js: ", res);
+                  // console.log("From ReservationTable.js: ", res);
                   return (
-                    <CustomTableCell key={court.id}>
+                    <CustomTableCell key={court.id} align="center">
                       <TableButton 
                         reservation={res} 
                         setChosenRes={this.setChosenRes} 
@@ -117,6 +116,7 @@ class ReservationTable extends React.Component {
           onClose = {this.closeDialog}
           reservation = {this.state.reservation}
         />
+
       </Paper>
 
     );
@@ -131,6 +131,7 @@ const CustomTableCell = withStyles(theme => ({
     color: theme.palette.common.white,
   },
   body: {
+    backgroundColor: '#e0e0e0',
     fontSize: 14
   },
 }))(TableCell);
