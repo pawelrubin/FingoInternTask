@@ -18,7 +18,6 @@ class ReservationTable extends React.Component {
   };
 
   openDialog = () => {
-    console.log(this.state.reservation)
     if (this.state.reservation.person === "" || this.state.reservation === undefined) {
       this.setState({ openReserve: true }); 
     } else {

@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-router.initRoutes(app);
+app.use('/api', router);
 
 const server = app.listen(4000, () => {
   console.log('Server started');

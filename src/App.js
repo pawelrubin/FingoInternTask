@@ -3,6 +3,7 @@ import './components/ReservationTable';
 import ReservationTable from './components/ReservationTable';
 import Statistics from './components/Statistics';
 import { LinearProgress } from '@material-ui/core';
+import FailDialog from './components/dialogs/FailDialog';
 // Array of six arrays. 
 // Each of them contains reservations data for particular court
 let reservationsArray = [
@@ -132,7 +133,8 @@ class App extends React.Component {
     reservations: [],
     openHour: null,
     closeHour: null,
-    fetched: false
+    fetched: false,
+    failDialog: false
   }
 
   constructor(props) {
@@ -168,6 +170,9 @@ class App extends React.Component {
     .then((response) => response.json())
     .then((data) => {
       this.setState(data);
+      if (data.message !== 'success') {
+        this.setState({ failDialog: true });
+      }
     })
     .catch(error => {
       console.log("Api error: " + error);
@@ -192,7 +197,11 @@ class App extends React.Component {
       return (
         <div>
           <ReservationTable openHours = {openHours} courts = {this.state.courts} reservations = {this.state.reservations} newReservation={this.newReservation}/>
-          <Statistics/> 
+          <Statistics/>
+          <FailDialog 
+            onClose={() => this.setState({failDialog: false})}
+            show={this.state.failDialog}
+          />
         </div> 
       ) 
     } else {
