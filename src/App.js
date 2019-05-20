@@ -38,96 +38,117 @@ const courts = [
 const reservations = [
   [
     {
+      courtID: 1,
       hour: 6,
       person: "John Smith"
     },
     {
+      courtID: 1,
       hour: 7,
       person: "Zygmunt Dzwon"
     },
     {
+      courtID: 1,
       hour: 21,
       person: "Tony Stark"
     }
   ],
   [
     {
+      courtID: 2,
       hour: 21,
       person: "Sean Pean"
     },
     { 
+      courtID: 2,
       hour: 7,
       person: "Gerald"
     }
   ],
   [
     {
+      courtID: 3,
       hour: 13,
       person: "Malcolm XD"
     },
     {
+      courtID: 3,
       hour: 11,
       person: "Herbie Hancock"
     },
     { 
+      courtID: 3,
       hour: 6,
       person: "Hungry Joe"
     },
     { 
+      courtID: 3,
       hour: 8,
       person: "Zbigniew Stonoga"
     }
   ],
   [
     {
+      courtID: 4,
       hour: 15,
       person: "Mike Portnoy"
     },
     {
+      courtID: 4,
       hour: 9,
       person: "Donal Trump"
     },
     { 
+      courtID: 4,
       hour: 8,
       person: "Tom Cruise"
     },
     { 
+      courtID: 4,
       hour: 6,
       person: "Krzysztof Komeda"
     }
   ],
   [
     {
+      courtID: 5,
       hour: 17,
       person: "Frank Zappa"
     },
     {
+      courtID: 5,
       hour: 20,
       person: "John Coltrane"
     },
     { 
+      courtID: 5,
       hour: 19,
       person: "Beny Golson"
     },
     { 
+      courtID: 5,
       hour: 18,
       person: "Guthrie Govan"
     }
   ],
   [
     {
+      courtID: 6,
       hour: 14,
       person: "Jan Nowak"
     },
     {
+      courtID: 6,
       hour: 11,
       person: "Kubuś Puchatek"
     },
     { 
+      courtID: 6,
       hour: 8,
       person: "John Petrucci"
     },
     { 
+      courtID: 6,
       hour: 12,
       person: "Johny Cash"
     }
@@ -138,7 +159,9 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      reservation: {}
+    };
   }
 
   componentDidMount() {
@@ -161,10 +184,14 @@ class App extends React.Component {
         interval: (hour + i) + "-" + (hour + i + 1)
       }))
      
+  newReservation = (res) => {
+    console.log(res);
+  }
+
   render() {
     const openHours = this.makeHours(openHour, closeHour);
     return (
-      <ReservationTable openHours = {openHours} courts = {courts} reservations = {reservations}/>
+      <ReservationTable openHours = {openHours} courts = {courts} reservations = {reservations} newReservation={this.newReservation}/>
     );
   }
 }

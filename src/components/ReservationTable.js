@@ -8,6 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 import ReserveDialog from './ReserveDialog';
 import DetailsDialog from './DetailsDialog';
 import TableButton from './TableButton';
+import { throwStatement } from '@babel/types';
 
 class ReservationTable extends React.Component {
   
@@ -19,7 +20,7 @@ class ReservationTable extends React.Component {
 
   openDialog = () => {
     console.log(this.state.reservation)
-    if (this.state.reservation === {} || this.state.reservation === undefined) {
+    if (this.state.reservation.person === "" || this.state.reservation === undefined) {
       this.setState({ openReserve: true }); 
     } else {
       this.setState({ openDetails: true }); 
@@ -29,10 +30,10 @@ class ReservationTable extends React.Component {
   closeDialog = () => {
     this.setState({
       openDetails: false,
-      openReserve: false
+      openReserve: false,
+      reservation: {}
     })
     // TODO: functional setState()
-    this.state.reservation = {};
   }
 
   setChosenRes = (res) => {    
@@ -46,6 +47,15 @@ class ReservationTable extends React.Component {
       disabled: true,
       backgroundColor: taken ? red : green
     }
+  }
+
+  // After receiving person's name of a new reservation, we will send the data to the parent Component. 
+  createReservation = (name) => {
+    this.props.newReservation({
+      courtID: this.state.reservation.courtID,
+      hour: this.state.reservation.hour,
+      name: name
+    })
   }
 
   render() {
@@ -73,6 +83,13 @@ class ReservationTable extends React.Component {
                 {courts.map((court) => {
                   let res = reservations[court.id - 1].find((e) => e.hour === openHour.id);
                   let taken = (res != null) ? true : false
+                  if (res == null) {
+                    res = {
+                      courtID: court.id,
+                      hour: openHour.id,
+                      person: ''
+                    }
+                  }
                   return (
                     <CustomTableCell key={court.id}>
                       <TableButton 
@@ -91,7 +108,7 @@ class ReservationTable extends React.Component {
         <ReserveDialog 
           show = {this.state.openReserve}
           onClose = {this.closeDialog}
-          onSubmit = {this.closeDialog}
+          createReservation = {this.createReservation}
         />
 
         <DetailsDialog

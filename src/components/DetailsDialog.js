@@ -35,8 +35,8 @@ class DetailsDialog extends React.Component {
       </div>
     )
   }
-
 }
+
 
 DetailsDialog.propTypes = {
   onClose: PropTypes.func.isRequired,

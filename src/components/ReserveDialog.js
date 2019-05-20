@@ -10,10 +10,22 @@ import Button from '@material-ui/core/Button';
 
 class ReserveDialog extends React.Component {
 
-  render() {
+  // On dialog submit we will send the name to the parent Component.
+  onSubmit = () => {
+    this.props.createReservation(this.state.textFieldValue);
+    this.props.onClose();
+  }
 
-    const { onClose, show, onSubmit } = this.props;
-    
+  // Setting name required for reservation in the state.
+  handleTextFieldChange = (e) => {
+    this.setState({
+      textFieldValue: e.target.value
+    });
+  }
+
+  render() {
+    const { onClose, show } = this.props;
+
     return (
       <div>
         <Dialog
@@ -27,6 +39,7 @@ class ReserveDialog extends React.Component {
               To reserve the court, please enter your name.
             </DialogContentText>
             <TextField
+              onChange={this.handleTextFieldChange}
               autoFocus
               margin="dense"
               id="name"
@@ -39,7 +52,7 @@ class ReserveDialog extends React.Component {
             <Button onClick={onClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={onSubmit} color="primary">
+            <Button onClick={this.onSubmit} color="primary">
               Reserve
             </Button>
           </DialogActions>
@@ -53,7 +66,7 @@ class ReserveDialog extends React.Component {
 ReserveDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
-  onSubmit: PropTypes.func.isRequired
+  newReservation: PropTypes.func.isRequired
 };
 
 export default (ReserveDialog);
