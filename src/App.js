@@ -1,41 +1,11 @@
 import React from 'react';
 import './components/ReservationTable';
 import ReservationTable from './components/ReservationTable';
-
-const openHour = 6; 
-
-const closeHour = 22;
-
-const courts = [
-  {
-    id: 1,
-    name: 'Awesome Court'
-  },
-  {
-    id: 2,
-    name: 'Court Of Joy'
-  },
-  {
-    id: 3,
-    name: 'Tennis Temple'
-  },
-  {
-    id: 4,
-    name: 'Courtroom'
-  },
-  {
-    id: 5,
-    name: 'Just Court'
-  },
-  {
-    id: 6,
-    name: 'The Best Court',
-  },
-]
-
+import Statistics from './components/Statistics';
+import { LinearProgress } from '@material-ui/core';
 // Array of six arrays. 
 // Each of them contains reservations data for particular court
-let reservations = [
+let reservationsArray = [
   [
     {
       courtID: 1,
@@ -157,24 +127,52 @@ let reservations = [
 
 class App extends React.Component {
 
+  state = {
+    courts: [],
+    reservations: [],
+    openHour: null,
+    closeHour: null,
+    fetched: false
+  }
+
   constructor(props) {
     super(props);
-    this.state = {
-      reservation: {}
-    };
   }
 
   componentDidMount() {
-    fetch('/api/hello')
-      .then(response => response.json())
-      .then((data) => {
-        this.setState({ message: data.message });
-      })
-      .catch(error => {
-        console.log("Api error: " + error);
-      });
+    this.fetchData();
   }
 
+  fetchData = () => {
+    fetch('/api/res')
+    .then(response => response.json())
+    .then((data) => {
+        this.setState(data);
+        this.setState({fetched: true})
+    })
+    .catch(error => {
+      console.log("Api error: " + error);
+    });
+  }
+
+  sendNewReservation = (res) => {
+    console.log(res);
+    fetch('/api/new', {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(res)
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      this.setState(data);
+    })
+    .catch(error => {
+      console.log("Api error: " + error);
+    });
+  }
   
   makeHours = (openHour, closeHour) => 
     Array(closeHour - openHour)
@@ -185,16 +183,22 @@ class App extends React.Component {
       }))
      
   newReservation = (res) => {
-    let courtID = res.courtID;
-    // console.log("From App.js:", res);
-    reservations[courtID-1].push(res);
+    this.sendNewReservation(res);
   }
 
   render() {
-    const openHours = this.makeHours(openHour, closeHour);
-    return (
-      <ReservationTable openHours = {openHours} courts = {courts} reservations = {reservations} newReservation={this.newReservation}/>
-    );
+    if (this.state.fetched) { 
+      const openHours = this.makeHours(this.state.openHour, this.state.closeHour);
+      return (
+        <div>
+          <ReservationTable openHours = {openHours} courts = {this.state.courts} reservations = {this.state.reservations} newReservation={this.newReservation}/>
+          <Statistics/> 
+        </div> 
+      ) 
+    } else {
+      return (<LinearProgress/>)
+    }
+
   }
 }
 

@@ -5,8 +5,8 @@ import { TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 import red from '@material-ui/core/colors/red';
 import green from '@material-ui/core/colors/green';
 import { withStyles } from '@material-ui/core/styles';
-import ReserveDialog from './ReserveDialog';
-import DetailsDialog from './DetailsDialog';
+import ReserveDialog from './dialogs/ReserveDialog';
+import DetailsDialog from './dialogs/DetailsDialog';
 import TableButton from './TableButton';
 
 class ReservationTable extends React.Component {
