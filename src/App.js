@@ -4,128 +4,6 @@ import ReservationTable from './components/ReservationTable';
 import Statistics from './components/Statistics';
 import { LinearProgress } from '@material-ui/core';
 import FailDialog from './components/dialogs/FailDialog';
-// Array of six arrays. 
-// Each of them contains reservations data for particular court
-let reservationsArray = [
-  [
-    {
-      courtID: 1,
-      hour: 6,
-      person: "John Smith"
-    },
-    {
-      courtID: 1,
-      hour: 7,
-      person: "Zygmunt Dzwon"
-    },
-    {
-      courtID: 1,
-      hour: 21,
-      person: "Tony Stark"
-    }
-  ],
-  [
-    {
-      courtID: 2,
-      hour: 21,
-      person: "Sean Pean"
-    },
-    { 
-      courtID: 2,
-      hour: 7,
-      person: "Gerald"
-    }
-  ],
-  [
-    {
-      courtID: 3,
-      hour: 13,
-      person: "Malcolm XD"
-    },
-    {
-      courtID: 3,
-      hour: 11,
-      person: "Herbie Hancock"
-    },
-    { 
-      courtID: 3,
-      hour: 6,
-      person: "Hungry Joe"
-    },
-    { 
-      courtID: 3,
-      hour: 8,
-      person: "Zbigniew Stonoga"
-    }
-  ],
-  [
-    {
-      courtID: 4,
-      hour: 15,
-      person: "Mike Portnoy"
-    },
-    {
-      courtID: 4,
-      hour: 9,
-      person: "Donal Trump"
-    },
-    { 
-      courtID: 4,
-      hour: 8,
-      person: "Tom Cruise"
-    },
-    { 
-      courtID: 4,
-      hour: 6,
-      person: "Krzysztof Komeda"
-    }
-  ],
-  [
-    {
-      courtID: 5,
-      hour: 17,
-      person: "Frank Zappa"
-    },
-    {
-      courtID: 5,
-      hour: 20,
-      person: "John Coltrane"
-    },
-    { 
-      courtID: 5,
-      hour: 19,
-      person: "Beny Golson"
-    },
-    { 
-      courtID: 5,
-      hour: 18,
-      person: "Guthrie Govan"
-    }
-  ],
-  [
-    {
-      courtID: 6,
-      hour: 14,
-      person: "Jan Nowak"
-    },
-    {
-      courtID: 6,
-      hour: 11,
-      person: "Kubuś Puchatek"
-    },
-    { 
-      courtID: 6,
-      hour: 8,
-      person: "John Petrucci"
-    },
-    { 
-      courtID: 6,
-      hour: 12,
-      person: "Johny Cash"
-    }
-  ],
-]
-
 class App extends React.Component {
 
   state = {
@@ -133,12 +11,10 @@ class App extends React.Component {
     reservations: [],
     openHour: null,
     closeHour: null,
-    fetched: false,
-    failDialog: false
-  }
-
-  constructor(props) {
-    super(props);
+    resFetched: false,
+    failDialog: false,
+    stats: {},
+    numForNames: {}
   }
 
   componentDidMount() {
@@ -150,15 +26,25 @@ class App extends React.Component {
     .then(response => response.json())
     .then((data) => {
         this.setState(data);
-        this.setState({fetched: true})
+        this.setState({resFetched: true})
     })
     .catch(error => {
       console.log("Api error: " + error);
     });
   }
 
+  fetchStats = () => {
+    return fetch('/api/stats')
+      .then(response => response.json())
+      .then((data) => {
+        this.setState(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
   sendNewReservation = (res) => {
-    console.log(res);
     fetch('/api/new', {
       method: "POST",
       headers: {
@@ -172,6 +58,8 @@ class App extends React.Component {
       this.setState(data);
       if (data.message !== 'success') {
         this.setState({ failDialog: true });
+      } else {
+        this.fetchStats(); // Let's update statistics
       }
     })
     .catch(error => {
@@ -192,12 +80,22 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.state.fetched) { 
+    if (this.state.resFetched) { 
       const openHours = this.makeHours(this.state.openHour, this.state.closeHour);
       return (
         <div>
-          <ReservationTable openHours = {openHours} courts = {this.state.courts} reservations = {this.state.reservations} newReservation={this.newReservation}/>
-          <Statistics/>
+          <ReservationTable 
+            openHours = {openHours}
+            courts = {this.state.courts}
+            reservations = {this.state.reservations} 
+            newReservation={this.newReservation}
+          />
+          <Statistics 
+            fetchData={this.fetchStats}
+            courts={this.state.courts}
+            stats={this.state.stats}
+            numForNames={this.state.numForNames}
+          />
           <FailDialog 
             onClose={() => this.setState({failDialog: false})}
             show={this.state.failDialog}

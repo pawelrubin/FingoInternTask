@@ -2,8 +2,6 @@ import React from 'react';
 import Table from '@material-ui/core/Table';
 import Paper from '@material-ui/core/Paper';
 import { TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
-import red from '@material-ui/core/colors/red';
-import green from '@material-ui/core/colors/green';
 import { withStyles } from '@material-ui/core/styles';
 import ReserveDialog from './dialogs/ReserveDialog';
 import DetailsDialog from './dialogs/DetailsDialog';
@@ -40,13 +38,6 @@ class ReservationTable extends React.Component {
     this.openDialog()
   }
 
-  setStyle = (taken) => {
-    return {
-      disabled: true,
-      backgroundColor: taken ? red : green
-    }
-  }
-
   // After receiving person's name of a new reservation, we will send the data to the parent Component. 
   createReservation = (name) => {
     this.props.newReservation({
@@ -61,10 +52,8 @@ class ReservationTable extends React.Component {
     const courts = this.props.courts;
     const reservations = this.props.reservations;
 
-    console.log(courts);
-
     return (
-      <Paper style={{overflow: 'auto'}}>
+      <Paper style={{overflow: 'auto', marginBottom: 8}}>
         <Table>
           <TableHead>
             <TableRow>
