@@ -14,7 +14,7 @@ class Statistics extends React.Component {
   componentDidMount() {
     this.props.fetchData()
     .then(() => {
-      this.setState({fetched: true});
+      this.setState(() => ({fetched: true}));
     })
   }
 

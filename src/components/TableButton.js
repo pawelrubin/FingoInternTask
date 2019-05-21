@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 class TableButton extends React.Component {
 
   handleClick = () => {
-    console.log(this.props.reservation);
     this.props.setChosenRes(this.props.reservation);
   }
 

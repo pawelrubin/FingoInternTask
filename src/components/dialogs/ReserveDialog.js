@@ -13,7 +13,7 @@ class ReserveDialog extends React.Component {
   state = {
     name: ''
   }
-
+  
   // On dialog submit we will send the name to the parent Component.
   onSubmit = () => {
     this.props.createReservation(this.state.name);
@@ -22,9 +22,10 @@ class ReserveDialog extends React.Component {
 
   // Setting name required for reservation in the state.
   handleTextFieldChange = (e) => {
-    this.setState({
-      name: e.target.value
-    });
+    let value = e.target.value
+    this.setState(() => ({
+      name: value
+    }));
   }
 
   render() {

@@ -17,24 +17,24 @@ class ReservationTable extends React.Component {
 
   openDialog = () => {
     if (this.state.reservation.person === "" || this.state.reservation === undefined) {
-      this.setState({ openReserve: true }); 
+      this.setState(() => ({ openReserve: true })); 
     } else {
-      this.setState({ openDetails: true }); 
+      this.setState(() => ({ openDetails: true })); 
     }
   }
 
   closeDialog = () => {
-    this.setState({
+    this.setState(() => ({
       openDetails: false,
       openReserve: false,
       reservation: {}
-    })
-    // TODO: functional setState()
+    }))
   }
 
   setChosenRes = (res) => {    
     // TODO: functional setState()
-    this.state.reservation = res;
+    // this.setState({ reservation: res});
+    this.state.reservation = res; 
     this.openDialog()
   }
 

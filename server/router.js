@@ -5,7 +5,8 @@ let router = new express.Router();
 const openHour = 6; 
 const closeHour = 22;
 
-let reservations =  [
+let reservations = [[], [], [], [], [], []]; // "data model" 
+reservations =  [
   [
     {
       "courtID": 1,
@@ -152,12 +153,12 @@ let courts = [
       },
     ]
 
-getFill = (courtID) => {
+const getFill = (courtID) => {
   let numOfHours = closeHour - openHour;
   return (reservations[courtID-1].length/(numOfHours)*100);
 }
 
-getStats = () => {
+const getStats = () => {
   return ({
     fill: { // fill in %
       c1: getFill(1),
@@ -170,7 +171,7 @@ getStats = () => {
   })
 }
 
-getNumForNames = () => (
+const getNumForNames = () => (
   reservations.reduce((a, b) => (a.concat(b))).reduce((acc, e) => { 
       if (acc[e.person] === undefined) 
         acc[e.person] = 1;
@@ -206,7 +207,7 @@ router.post('/new', (req, res) => {
   })
 });
 
-router.get('/stats', (req, res) => {
+router.get('/stats', (_, res) => {
   res.json({
     "stats": getStats(),
     "numForNames": getNumForNames()

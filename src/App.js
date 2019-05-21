@@ -25,8 +25,7 @@ class App extends React.Component {
     fetch('/api/res')
     .then(response => response.json())
     .then((data) => {
-        this.setState(data);
-        this.setState({resFetched: true})
+        this.setState(() => ({...data, resFetched: true}))
     })
     .catch(error => {
       console.log("Api error: " + error);
@@ -37,10 +36,10 @@ class App extends React.Component {
     return fetch('/api/stats')
       .then(response => response.json())
       .then((data) => {
-        this.setState(data);
+        this.setState(() => data);
       })
       .catch((error) => {
-        console.log(error);
+      console.log("Api error: " + error);
       })
   }
 
@@ -57,7 +56,7 @@ class App extends React.Component {
     .then((data) => {
       this.setState(data);
       if (data.message !== 'success') {
-        this.setState({ failDialog: true });
+        this.setState(() => ({ failDialog: true }));
       } else {
         this.fetchStats(); // Let's update statistics
       }
@@ -97,7 +96,7 @@ class App extends React.Component {
             numForNames={this.state.numForNames}
           />
           <FailDialog 
-            onClose={() => this.setState({failDialog: false})}
+            onClose={() => this.setState(() => ({failDialog: false}))}
             show={this.state.failDialog}
           />
         </div> 
