@@ -4,6 +4,10 @@ Simple React App for tennis courts reservations.
 I've used Material-UI React Components.
 
 ### Manual
+To install dependencies type:
+```
+npm install
+```
 The server is required to run the app. To start the server type the command below:
 ```
 npm run server
