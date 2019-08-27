@@ -32,10 +32,11 @@ class ReservationTable extends React.Component {
   }
 
   setChosenRes = (res) => {    
-    // TODO: functional setState()
-    // this.setState({ reservation: res});
-    this.state.reservation = res; 
-    this.openDialog()
+    this.setState(() => ({
+      reservation: res
+    }), () => {
+      this.openDialog();
+    })
   }
 
   // After receiving person's name of a new reservation, we will send the data to the parent Component. 
